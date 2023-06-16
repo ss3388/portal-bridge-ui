@@ -22,6 +22,8 @@ export const getIsSanctioned = async (
   CLUSTER: Cluster,
   addr?: string
 ) => {
+  return false;
+  /*
   if (!addr) return;
 
   const trmChain = getTrmChainName(chainId);
@@ -90,4 +92,5 @@ export const getIsSanctioned = async (
     return isSanctioned;
   }
   return false;
+*/
 };
