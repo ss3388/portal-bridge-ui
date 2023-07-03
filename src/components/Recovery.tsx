@@ -120,6 +120,8 @@ import {
   getOriginalPackageId,
 } from "@certusone/wormhole-sdk/lib/cjs/sui";
 
+const TransferWithRelay = 3;
+
 const useStyles = makeStyles((theme) => ({
   mainCard: {
     padding: "32px 32px 16px",
@@ -400,9 +402,6 @@ function RelayerRecovery({
   const [selectedRelayer, setSelectedRelayer] = useState<Relayer | null>(null);
   const [isAttemptingToSchedule, setIsAttemptingToSchedule] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
-  console.log(parsedPayload, relayerInfo, "in recovery relayer");
-
   const fee =
     (parsedPayload && parsedPayload.fee && parseInt(parsedPayload.fee)) || null;
   //This check is probably more sophisticated in the future. Possibly a net call.
@@ -868,12 +867,14 @@ export default function Recovery() {
     setRecoverySignedVAA(event.target.value.trim());
   }, []);
   useEffect(() => {
+    console.log(recoverySignedVAA)
     if (recoverySignedVAA) {
       try {
         const rawVaa = hexToUint8Array(recoverySignedVAA);
         const parsedVAA = parseVaa(rawVaa);
-        if (parsedVAA.version === 3) {
-          dispatch(setIsTransferWithRelay(rawVaa));
+        // Transfer with relay
+        if (parsedVAA.payload.readUInt8(0) === TransferWithRelay) {
+          dispatch(setIsTransferWithRelay());
         }
         setRecoveryParsedVAA(parsedVAA);
       } catch (e) {
@@ -881,7 +882,7 @@ export default function Recovery() {
         setRecoveryParsedVAA(null);
       }
     }
-  }, [recoverySignedVAA]);
+  }, [recoverySignedVAA, dispatch]);
   const parsedPayloadTargetChain = parsedPayload?.targetChain;
   const enableRecovery = recoverySignedVAA && parsedPayloadTargetChain;
 

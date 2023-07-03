@@ -34,6 +34,7 @@ import useGetIsTransferCompleted from "../../hooks/useGetIsTransferCompleted";
 import { useHandleRedeem } from "../../hooks/useHandleRedeem";
 import useIsWalletReady from "../../hooks/useIsWalletReady";
 import {
+  selectIsTransferWithRealy,
   selectTransferIsRecovery,
   selectTransferTargetAsset,
   selectTransferTargetChain,
@@ -179,7 +180,7 @@ function Redeem() {
     dispatch(reset());
   }, [dispatch]);
   const howToAddTokensUrl = getHowToAddTokensToWalletUrl(targetChain);
-
+  const isTransferWithRelay = useSelector(selectIsTransferWithRealy);
   const relayerContent = (
     <>
       {isEVMChain(targetChain) && !isTransferCompleted && !targetIsAcala ? (
@@ -270,7 +271,11 @@ function Redeem() {
       {targetChain === CHAIN_ID_SOLANA ? (
         <SolanaCreateAssociatedAddressAlternate />
       ) : null}
-
+      { isTransferWithRelay && 
+        <Alert severity="info" variant="outlined" className={classes.alert}>
+          By redeeming by your own, you would not pay any fees other than gas and you would not get any native gas dropped off.
+        </Alert>
+      }
       <>
         {" "}
         <ButtonWithLoader
