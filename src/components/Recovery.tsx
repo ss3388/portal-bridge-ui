@@ -867,7 +867,6 @@ export default function Recovery() {
     setRecoverySignedVAA(event.target.value.trim());
   }, []);
   useEffect(() => {
-    console.log(recoverySignedVAA)
     if (recoverySignedVAA) {
       try {
         const rawVaa = hexToUint8Array(recoverySignedVAA);

@@ -388,4 +388,4 @@ export const selectRelayerTokenInfo = (state: RootState) => {
 
 export const selectIsTransferWithRealy = (state: RootState) => {
   return state.transfer.isTransferWithRealy;
-}
+};

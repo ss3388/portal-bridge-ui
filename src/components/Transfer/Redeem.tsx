@@ -271,11 +271,12 @@ function Redeem() {
       {targetChain === CHAIN_ID_SOLANA ? (
         <SolanaCreateAssociatedAddressAlternate />
       ) : null}
-      { isTransferWithRelay && 
+      {isTransferWithRelay && (
         <Alert severity="info" variant="outlined" className={classes.alert}>
-          By redeeming by your own, you would not pay any fees other than gas and you would not get any native gas dropped off.
+          By redeeming by your own, you would not pay any fees other than gas
+          and you would not get any native gas dropped off.
         </Alert>
-      }
+      )}
       <>
         {" "}
         <ButtonWithLoader
